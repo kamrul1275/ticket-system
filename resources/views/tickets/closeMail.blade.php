@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Opened</title>
+    <title>Ticket close</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,22 +70,25 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>New Ticket Opened</h1>
+            <h1>Ticket Close</h1>
         </div>
-        <div class="content">
-            <h2>Ticket Details</h2>
-            <p><strong>Subject:</strong> {{ $ticket->subject }}</p>
-            <p><strong>Description:</strong> {{ $ticket->description }}</p>
-            <p><strong>Opened by:</strong> {{ $ticket->user->name }} ({{ $ticket->user->email }})</p>
+       
+        <h2>Close Successfully</h2>
 
-            <p>
-                A new support ticket has been opened. You can view and respond to the ticket by clicking the button below:
-            </p>
-            <a href="{{ url('/tickets/' . $ticket->id) }}" target="_blank">View Ticket</a>
-        </div>
-        <div class="footer">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
-        </div>
+
+            <p>Hello {{ $ticket->user->name ?? 'Customer' }},</p>
+
+            <p>We wanted to inform you that your ticket with the subject "<strong>{{ $ticket->subject }}</strong>" has been closed.</p>
+
+            <p><strong>Ticket Details:</strong></p>
+            <p>Subject: {{ $ticket->subject }}</p>
+            <p>Description: {{ $ticket->description }}</p>
+            <p>Status: Closed</p>
+
+            <p>If you have any further issues, feel free to open a new ticket.</p>
+
+            <p>Thank you,<br>The Support Team</p>
+
     </div>
 </body>
 </html>

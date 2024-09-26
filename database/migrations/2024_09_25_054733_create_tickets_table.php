@@ -12,12 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('subject');
-            $table->text('description');
-            $table->enum('status', ['open', 'closed'])->default('open');
-            $table->timestamps();
+          
+
+    $table->id();
+    $table->unsignedBigInteger('user_id'); // The user who created the ticket
+    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+    $table->string('subject');
+    $table->text('description');
+    $table->string('status')->default('open');
+    $table->timestamps();
         });
     }
 

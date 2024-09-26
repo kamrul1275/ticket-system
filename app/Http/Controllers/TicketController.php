@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Mail;  // For sending emails
 use App\Mail\TicketOpened;    // The mailable for ticket opened notification
 use App\Mail\TicketClosed;    // The mailable for ticket closed notification
 use Illuminate\Support\Facades\Gate;  // For authorization
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TicketController extends Controller
 {
+
+    use AuthorizesRequests;
     public function index()
     {
         // Ensure the user is authenticated
@@ -40,7 +43,7 @@ class TicketController extends Controller
         ]);
         
         // Notify admin
-        Mail::to('admin@example.com')->send(new TicketOpened($ticket));
+        Mail::to('support@example.com')->send(new TicketOpened($ticket));
         return redirect('/')->with('success', 'Ticket created successfully');
     }
     
@@ -50,6 +53,9 @@ class TicketController extends Controller
         return view('tickets.show', compact('ticket'));
     }
     
+
+
+
     public function respond(Ticket $ticket, Request $request)
     {
         // Add response logic here
@@ -61,7 +67,7 @@ class TicketController extends Controller
         
         // Notify customer
         Mail::to($ticket->user->email)->send(new TicketClosed($ticket));
-        return redirect('/tickets')->with('success', 'Ticket closed successfully');
+        return redirect('/')->with('success', 'Ticket closed successfully');
     }
     
 }

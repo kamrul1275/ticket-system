@@ -2,43 +2,32 @@
 
 namespace App\Mail;
 
+use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class TicketOpened extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $ticket; // Add this
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Ticket $ticket) // Accept Ticket object in constructor
     {
-        //
+        $this->ticket = $ticket; // Assign ticket to public property
     }
 
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Ticket Opened',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'tickets.openMail',
-        );
+        return $this->view('tickets.openMail')
+                    ->with('ticket', $this->ticket); // Pass the ticket to the view
     }
 
     /**

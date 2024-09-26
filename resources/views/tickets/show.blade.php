@@ -1,33 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card mb-3">
-    <div class="card-header">
-        <h4>Ticket #{{ $ticket->id }}: {{ $ticket->subject }}</h4>
-        <span class="badge {{ $ticket->status == 'open' ? 'bg-success' : 'bg-secondary' }}">
-            {{ ucfirst($ticket->status) }}
-        </span>
-    </div>
-    <div class="card-body">
-        <p>{{ $ticket->description }}</p>
-        <p><strong>Submitted by:</strong> {{ $ticket->user->name }}</p>
-    </div>
-</div>
-
-@if(auth()->user()->role == 'admin' && $ticket->status == 'open')
-<div class="card">
-    <div class="card-header">
-        <h5>Respond to Ticket</h5>
-    </div>
-    <div class="card-body">
-        <form action="/tickets/{{ $ticket->id }}/response" method="POST">
+<div class="container">
+    <h2>Ticket Details</h2>
+    <p><strong>Subject:</strong> {{ $ticket->subject }}</p>
+    <p><strong>Description:</strong> {{ $ticket->description }}</p>
+    <p><strong>Status:</strong> {{ $ticket->status }}</p>
+    <p><strong>Opened by:</strong> {{ $ticket->user->name }}</p>
+    <p><strong>Created at:</strong> {{ $ticket->created_at }}</p>
+    
+    <!-- You might want to include a close ticket button here -->
+    @if($ticket->status !== 'closed')
+        <form action="{{ route('tickets.close', $ticket->id) }}" method="POST">
             @csrf
-            <div class="mb-3">
-                <textarea name="response" class="form-control" rows="4" placeholder="Write your response here..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Response</button>
+            @method('POST') <!-- or PATCH depending on your route -->
+            <button type="submit" class="btn btn-danger">Close Ticket</button>
         </form>
-    </div>
+    @endif
 </div>
-@endif
 @endsection
